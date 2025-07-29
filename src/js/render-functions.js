@@ -1,10 +1,10 @@
-// render-functions.js
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const galleryContainer = document.querySelector('.gallery');
 const loader = document.querySelector('.loader');
 const loadMoreWrapper = document.querySelector('.load-more-wrapper');
+const loadMoreBtn = document.querySelector('.load-more');
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
@@ -68,4 +68,12 @@ export function showLoadMoreButton() {
 
 export function hideLoadMoreButton() {
   loadMoreWrapper.classList.add('hidden');
+}
+
+export function disableLoadMoreButton() {
+  loadMoreBtn.disabled = true;
+}
+
+export function enableLoadMoreButton() {
+  loadMoreBtn.disabled = false;
 }

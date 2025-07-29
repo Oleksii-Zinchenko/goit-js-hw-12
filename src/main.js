@@ -9,6 +9,8 @@ import {
   showLoader,
   showLoadMoreButton,
   hideLoadMoreButton,
+  enableLoadMoreButton,
+  disableLoadMoreButton,
 } from './js/render-functions';
 
 const form = document.querySelector('.form');
@@ -40,7 +42,6 @@ async function handleSearchSubmit(event) {
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
-    hideLoader();
 
     if (!data.hits.length) {
       showWarning('No images found. Try another query.');
@@ -54,20 +55,19 @@ async function handleSearchSubmit(event) {
     hasMore ? showLoadMoreButton() : hideLoadMoreButton();
   } catch (error) {
     handleError(error);
+  } finally {
+    hideLoader();
   }
 }
 
 async function handleLoadMore() {
   currentPage += 1;
   showLoader();
-  loadMoreBtn.disabled = true;
+  disableLoadMoreButton();
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
     createGallery(data.hits);
-    hideLoader();
-    loadMoreBtn.disabled = false;
-
     scrollToNewContent();
 
     const hasMore = currentPage * 15 < totalHits;
@@ -80,6 +80,9 @@ async function handleLoadMore() {
     }
   } catch (error) {
     handleError(error);
+  } finally {
+    hideLoader();
+    enableLoadMoreButton();
   }
 }
 
